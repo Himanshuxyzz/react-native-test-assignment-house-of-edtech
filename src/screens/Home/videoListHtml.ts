@@ -10,6 +10,7 @@ export const videoListHtml = `
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -17,10 +18,13 @@ export const videoListHtml = `
       background: #f5f7fa;
       min-height: 100vh;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
     }
 
     .course-header {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      background: #6366f1;
       padding: 20px 16px;
       color: #fff;
     }
