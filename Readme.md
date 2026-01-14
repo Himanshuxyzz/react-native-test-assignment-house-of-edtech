@@ -47,3 +47,20 @@ src/
 ├── types/              # TypeScript type definitions
 └── utils/              # Utility functions
 ```
+
+## THINGS I'VE DELIVERED
+
+1. A working Expo app with two pages
+   1.1 WebView + Notifications : ✅
+   1.2 Video Player (HLS playback): ✅
+
+2. A short README.md explaining your choices and implementation ✅
+3. The app must working fine in Expo Go ✅
+
+### BONUS CHALLENGES I'VE COMPLETED
+
+1. Send a notification when the WebView finishes loading. ✅
+2. Make a notification and open the Video Player page when
+   tapped. ✅
+3. Add custom controls for the video (seek, skip, mute). ✅
+4. Allow switching between multiple video streams. ✅
