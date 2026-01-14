@@ -1,17 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEvent } from "expo";
+import * as ScreenOrientation from "expo-screen-orientation";
 import { Container, Header } from "@/components/common";
-import { useRoute } from "@react-navigation/native";
-import { lessonData, videoSources } from "@/constants/constants";
+import {
+  lessonData,
+  videoSources,
+  VIDEO_QUALITY_OPTIONS,
+} from "@/constants/constants";
 import {
   LessonScreenSkeleton,
   LessonSection,
@@ -19,24 +16,61 @@ import {
   LessonResourceLinks,
   LessonHeader,
   LessonInstructorCard,
-} from "@/components/VideoPlayer";
+} from "@/components/VideoScreen";
+import { VideoControls } from "@/components/video";
 import useDelayLoading from "@/hooks/useDelayLoading";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const VideoPlayer = ({ navigation }: any) => {
-  const route = useRoute();
-  const videoId = (route.params as any)?.videoId;
+  const videoViewRef = useRef<VideoView>(null);
+  const [currentQuality, setCurrentQuality] = useState("auto");
+  const [isBuffering, setIsBuffering] = useState(false);
 
   const isLoading = useDelayLoading();
 
   const player = useVideoPlayer(videoSources[0].videoSource, (player) => {
     player.loop = false;
-    player.play();
+    // Auto-play disabled
+    // player.play();
   });
 
   const { isPlaying } = useEvent(player, "playingChange", {
     isPlaying: player.playing,
   });
+
+  // Listen for buffering state
+  const { status } = useEvent(player, "statusChange", {
+    status: player.status,
+  });
+
+  // Update buffering state based on player status
+  useEffect(() => {
+    setIsBuffering(status === "loading" || status === "idle");
+  }, [status]);
+
+  // Reset orientation when exiting
+  useEffect(() => {
+    return () => {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    };
+  }, []);
+
+  const handleSourceChange = useCallback(
+    (source: { id: string; label: string; uri: string }) => {
+      setCurrentQuality(source.id);
+      // Note: In a production app we will use this to switch the video source
+      // player.replace(source.uri);
+    },
+    []
+  );
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleFullscreenChange = useCallback((fullscreen: boolean) => {
+    setIsFullscreen(fullscreen);
+  }, []);
 
   const progress = (lessonData.lessonNumber / lessonData.totalLessons) * 100;
 
@@ -49,18 +83,55 @@ const VideoPlayer = ({ navigation }: any) => {
     );
   }
 
+  // Fullscreen mode - only show video with controls
+  if (isFullscreen) {
+    return (
+      <View style={styles.fullscreenContainer}>
+        <VideoView
+          ref={videoViewRef}
+          style={styles.fullscreenVideo}
+          player={player}
+          nativeControls={false}
+        />
+        <VideoControls
+          player={player}
+          videoViewRef={videoViewRef}
+          isPlaying={isPlaying}
+          isBuffering={isBuffering}
+          isFullscreen={isFullscreen}
+          videoSources={VIDEO_QUALITY_OPTIONS}
+          currentSourceId={currentQuality}
+          onSourceChange={handleSourceChange}
+          onFullscreenChange={handleFullscreenChange}
+        />
+      </View>
+    );
+  }
+
   return (
     <Container edgeToEdge>
       <Header onPress={() => navigation.goBack()} />
-      <VideoView
-        style={styles.video}
-        player={player}
-        fullscreenOptions={{
-          enable: true,
-        }}
-        allowsPictureInPicture
-        nativeControls
-      />
+
+      {/* Video Container with Overlay Controls */}
+      <View style={styles.videoContainer}>
+        <VideoView
+          ref={videoViewRef}
+          style={styles.video}
+          player={player}
+          nativeControls={false}
+        />
+        <VideoControls
+          player={player}
+          videoViewRef={videoViewRef}
+          isPlaying={isPlaying}
+          isBuffering={isBuffering}
+          isFullscreen={isFullscreen}
+          videoSources={VIDEO_QUALITY_OPTIONS}
+          currentSourceId={currentQuality}
+          onSourceChange={handleSourceChange}
+          onFullscreenChange={handleFullscreenChange}
+        />
+      </View>
 
       <ScrollView
         style={styles.videoContentContainer}
@@ -123,9 +194,20 @@ const VideoPlayer = ({ navigation }: any) => {
 export default VideoPlayer;
 
 const styles = StyleSheet.create({
-  video: {
+  fullscreenContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
+  fullscreenVideo: {
+    flex: 1,
+  },
+  videoContainer: {
     width: "100%",
-    height: 240,
+    aspectRatio: 16 / 9,
+    backgroundColor: "#000",
+  },
+  video: {
+    flex: 1,
   },
   videoContentContainer: {
     flex: 1,
