@@ -5,6 +5,11 @@ import { Home, VideoPlayer } from "@/screens";
 
 const Stack = createNativeStackNavigator();
 
+export type RootParamList = {
+  Home: undefined;
+  VideoPlayer: { videoId: string };
+};
+
 const RootNavigation = () => {
   return (
     <NavigationContainer>
@@ -25,6 +30,9 @@ const RootNavigation = () => {
           component={VideoPlayer}
           options={{
             headerShown: false,
+          }}
+          initialParams={{
+            videoId: "",
           }}
         />
       </Stack.Navigator>
