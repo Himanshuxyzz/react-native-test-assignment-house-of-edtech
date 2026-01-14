@@ -32,6 +32,7 @@ const Home = () => {
     };
   }, [navigation]);
 
+  // Handle messages from webview
   const handleMessage = (event: WebViewMessageEvent) => {
     try {
       const data = JSON.parse(event.nativeEvent.data);
@@ -44,22 +45,25 @@ const Home = () => {
     }
   };
 
+  // Handle webview load end
   const handleWebViewLoadEnd = () => {
     setIsLoading(false);
-    if (!hasNotifiedRef.current) {
-      hasNotifiedRef.current = true;
-      // First: Welcome notification (3 sec delay)
-      sendWelcomeNotification();
-      // Second: Lesson update notification (8 sec delay = after welcome appears)
-      // This one opens VideoPlayer when tapped
-      sendLessonUpdateNotification();
-    }
+    // Only trigger notifications once per component mount
+    if (hasNotifiedRef.current) return;
+    hasNotifiedRef.current = true;
+
+    // Welcome notification (3 sec delay)
+    sendWelcomeNotification();
+    // Lesson update notification (14 sec delay, opens VideoPlayer on tap)
+    sendLessonUpdateNotification();
   };
 
+  // Handle welcome notification
   const handleWelcomeNotification = () => {
     sendWelcomeNotification();
   };
 
+  // Handle reminder notification
   const handleReminderNotification = () => {
     sendReminderNotification();
   };

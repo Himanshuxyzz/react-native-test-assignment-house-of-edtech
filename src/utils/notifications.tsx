@@ -1,6 +1,17 @@
 import * as Notifications from "expo-notifications";
 import { Alert, Linking, Platform } from "react-native";
 
+// Set up Android notification channel (required for Android 8+)
+if (Platform.OS === "android") {
+  Notifications.setNotificationChannelAsync("default", {
+    name: "Default",
+    importance: Notifications.AndroidImportance.MAX,
+    vibrationPattern: [0, 250, 250, 250],
+    lightColor: "#FF231F7C",
+    sound: "default",
+  });
+}
+
 // Configure notification handler
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
