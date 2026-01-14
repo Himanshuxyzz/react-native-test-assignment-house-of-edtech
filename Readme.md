@@ -30,7 +30,7 @@
 7. `@react-navigation/native-stack` - For the native stack
 8. `react-native-reanimated` - For smooth animations.
 9. `@react-native-community/slider` - For custom slider used in the custom controls.
-10. `expo-linking` - For deep linking - exp://IP:PORT/--/video/1
+10. `expo-linking` - For deep linking in expo go - exp://IP:PORT/--/video/1 for the production build - test-assignment://video/1
 11. `expo-notifications` - For notifications.
 12. `expo-screen-orientation` - For orientation handling.
 13. `react-native-webview` - For webview here in this assignment i'm rendering the inline html in the webview.
