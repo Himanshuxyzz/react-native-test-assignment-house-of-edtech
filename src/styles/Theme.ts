@@ -3,10 +3,11 @@ import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 const COLORS = {
-  PRIMARY: "",
-  BACKGROUND: "",
-  FOREGROUND: "",
-  SECONDARY: "",
+  PRIMARY: "#6366f1",
+  BACKGROUND: "#ffff",
+  FOREGROUND: "#0000",
+  TEXT: "#1a1a2e",
+  SKELETON: "#f5f7fa",
 };
 const SIZES = {
   WINDOW_WIDTH: width,
