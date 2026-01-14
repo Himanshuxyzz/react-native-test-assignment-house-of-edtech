@@ -26,6 +26,7 @@
 - **Quality Switching**: Simulated video quality toggle (Auto, 720p, 480p, etc.).
 - **Skeleton Loading**: A consistent, animated skeleton loading state using a generic composition pattern `Skeleton` will help in creating the skeleton component for any component.
 - **Clean Architecture**: broke the repeated code into reusable component ensuring readability and maintainability with clear separation of concerns only where needed.
+- **Notifications**: Implemented `expo-notifications` to trigger local notifications on certain events.
 
 ## 📂 Project Structure
 
