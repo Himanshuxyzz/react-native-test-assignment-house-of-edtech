@@ -1,5 +1,24 @@
 # LMS Assignment
 
+### INSTRUCTIONS TO RUN THE APP
+
+1. Clone the repository
+2. Install dependencies using `bun install`
+3. Run the app using `bunx expo start -c`
+4. For prebuild run `bunx expo prebuild --clean`
+5. For making the development build `bunx expo run:android --device`or `bunx expo run:ios --device`
+
+### FLOW
+
+1. APP opens with the home screen
+   1.1 After the app opens with the home screen, once the webview ends loading it will trigger a local notification after 5 seconds.
+   1.2 After the welcome notification is triggered, again a lesson updated notification will be triggered in 14 seconds, on pressing the notification it will open the video player screen.
+   1.3 You can trigger the local notification manually by pressing the buttons in the home screen which will trigger the notification after some delays.
+2. Video Player Screen
+   2.1 Video Player Screen will have a custom controls for the video (seek, skip, mute) and double tap to forward and backward.
+   2.2 Video Player Screen will have a fullscreen button to toggle between fullscreen and normal mode.
+   2.3 Video Player Screen will have a quality switcher to switch between different video qualities.
+
 ### PACKAGES I'VE USED
 
 1. `expo-video` - For video playback.
