@@ -44,3 +44,11 @@ export const lessonData: lessonDataTypes = {
     duration: "14:15",
   },
 };
+
+// Video quality options for settings
+export const VIDEO_QUALITY_OPTIONS = [
+  { id: "auto", label: "Auto", uri: videoSources[0]?.videoSource || "" },
+  { id: "720p", label: "720p HD", uri: videoSources[0]?.videoSource || "" },
+  { id: "480p", label: "480p", uri: videoSources[0]?.videoSource || "" },
+  { id: "360p", label: "360p", uri: videoSources[0]?.videoSource || "" },
+];
