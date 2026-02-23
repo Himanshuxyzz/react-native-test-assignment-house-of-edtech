@@ -52,7 +52,7 @@ const VideoPlayer = ({ navigation }: any) => {
   useEffect(() => {
     return () => {
       ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT_UP
+        ScreenOrientation.OrientationLock.PORTRAIT_UP,
       );
     };
   }, []);
@@ -63,7 +63,7 @@ const VideoPlayer = ({ navigation }: any) => {
       // Note: In a production app we will use this to switch the video source
       // player.replace(source.uri);
     },
-    []
+    [],
   );
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -92,6 +92,8 @@ const VideoPlayer = ({ navigation }: any) => {
           style={styles.fullscreenVideo}
           player={player}
           nativeControls={false}
+          allowsPictureInPicture={true}
+          startsPictureInPictureAutomatically={true}
         />
         <VideoControls
           player={player}
@@ -119,6 +121,8 @@ const VideoPlayer = ({ navigation }: any) => {
           style={styles.video}
           player={player}
           nativeControls={false}
+          allowsPictureInPicture={true}
+          startsPictureInPictureAutomatically={true}
         />
         <VideoControls
           player={player}

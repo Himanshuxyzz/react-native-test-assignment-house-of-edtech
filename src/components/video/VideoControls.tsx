@@ -104,7 +104,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
   const singleTapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const overlayWidth = useRef(Dimensions.get("window").width);
   const [doubleTapSide, setDoubleTapSide] = useState<"left" | "right" | null>(
-    null
+    null,
   );
 
   // Keep fresh ref to toggleControls for the timeout closure
@@ -212,7 +212,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
       showControlsHandler();
       player.seekBy(seconds);
     },
-    [player]
+    [player],
   );
 
   const handleMuteToggle = useCallback(() => {
@@ -229,11 +229,11 @@ const VideoControls: React.FC<VideoControlsProps> = ({
       const newFullscreen = !isFullscreen;
       if (newFullscreen) {
         await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.LANDSCAPE
+          ScreenOrientation.OrientationLock.LANDSCAPE,
         );
       } else {
         await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT_UP
+          ScreenOrientation.OrientationLock.PORTRAIT_UP,
         );
       }
       onFullscreenChange?.(newFullscreen);
@@ -249,7 +249,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
       setPlaybackSpeed(speed);
       setShowSettings(false);
     },
-    [player]
+    [player],
   );
 
   const wasPlayingRef = useRef(false);
@@ -265,7 +265,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         player.pause();
       }
     },
-    [isPlaying, player]
+    [isPlaying, player],
   );
 
   const handleSlidingComplete = useCallback(
@@ -287,7 +287,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
         player.play();
       }
     },
-    [duration, player]
+    [duration, player],
   );
 
   // Optimistic UI update during slide
@@ -326,6 +326,7 @@ const VideoControls: React.FC<VideoControlsProps> = ({
                 onSettingsPress={() => setShowSettings(true)}
                 isFullscreen={isFullscreen}
                 onFullscreenToggle={handleFullscreen}
+                onPiP={() => videoViewRef.current?.startPictureInPicture()}
               />
 
               {!doubleTapSide && (

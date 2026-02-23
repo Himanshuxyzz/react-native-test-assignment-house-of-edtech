@@ -8,6 +8,7 @@ type TopControlsProps = {
   onSettingsPress: () => void;
   isFullscreen: boolean;
   onFullscreenToggle: () => void;
+  onPiP?: () => void;
 };
 
 const TopControls: React.FC<TopControlsProps> = ({
@@ -16,6 +17,7 @@ const TopControls: React.FC<TopControlsProps> = ({
   onSettingsPress,
   isFullscreen,
   onFullscreenToggle,
+  onPiP,
 }) => {
   return (
     <View style={styles.topBar}>
@@ -28,6 +30,12 @@ const TopControls: React.FC<TopControlsProps> = ({
       </TouchableOpacity>
 
       <View style={styles.topBarRight}>
+        {onPiP && (
+          <TouchableOpacity style={styles.iconButton} onPress={onPiP}>
+            <Ionicons name="copy-outline" size={20} color="#fff" />
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity style={styles.iconButton} onPress={onSettingsPress}>
           <Ionicons name="settings-outline" size={22} color="#fff" />
         </TouchableOpacity>
