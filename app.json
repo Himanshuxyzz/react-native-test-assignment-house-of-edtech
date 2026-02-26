@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "test-assignment",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-a.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -37,6 +37,35 @@
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
         }
+      ],
+      [
+        "expo-alternate-app-icons",
+        [
+          {
+            "name": "Holi",
+            "ios": "./assets/icon-b.png",
+            "android": {
+              "foregroundImage": "./assets/icon-b.png",
+              "backgroundColor": "#ffffff"
+            }
+          },
+          {
+            "name": "Christmas",
+            "ios": "./assets/icon-c.png",
+            "android": {
+              "foregroundImage": "./assets/icon-c.png",
+              "backgroundColor": "#ffffff"
+            }
+          },
+          {
+            "name": "Diwali",
+            "ios": "./assets/icon-d.png",
+            "android": {
+              "foregroundImage": "./assets/icon-d.png",
+              "backgroundColor": "#ffffff"
+            }
+          }
+        ]
       ]
     ]
   }

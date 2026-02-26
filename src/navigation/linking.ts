@@ -6,7 +6,12 @@ const linking: LinkingOptions<RootParamList> = {
   prefixes: [Linking.createURL("/")],
   config: {
     screens: {
-      Home: "",
+      Main: {
+        screens: {
+          HomeTab: "",
+          Settings: "settings",
+        },
+      },
       VideoPlayer: "video/:videoId",
     },
   },
