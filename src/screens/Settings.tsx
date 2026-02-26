@@ -78,8 +78,8 @@ const Settings = () => {
             style={styles.avatar}
           />
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Himanshu</Text>
-            <Text style={styles.profileEmail}>himanshuxyzz@gmail.com</Text>
+            <Text style={styles.profileName}>Test</Text>
+            <Text style={styles.profileEmail}>test@gmail.com</Text>
           </View>
         </View>
 
