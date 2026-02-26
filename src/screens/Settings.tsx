@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Container } from "@/components/common";
 import Theme from "@/styles/Theme";
+import Constants from "expo-constants";
 import {
   setAlternateAppIcon,
   getAppIconName,
@@ -31,9 +32,19 @@ const APP_ICONS = [
   { id: "Diwali", name: "Diwali", asset: require("../../assets/icon-d.png") },
 ];
 
+const APP_ENV = Constants.expoConfig?.extra?.APP_ENV ?? "development";
+const APP_VERSION = Constants.expoConfig?.version ?? "1.0.0";
+
+const ENV_BADGE_COLORS: Record<string, string> = {
+  development: "#FF9500",
+  preview: "#5856D6",
+  production: "#34C759",
+};
+
 const Settings = () => {
   const [currentIcon, setCurrentIcon] = useState<string | null>(null);
   const [canChangeIcon, setCanChangeIcon] = useState(false);
+  const [shouldCrash, setShouldCrash] = useState(false);
 
   useEffect(() => {
     const checkSupport = async () => {
@@ -68,6 +79,26 @@ const Settings = () => {
     }, 100);
   };
 
+  const handleTestCrash = () => {
+    Alert.alert(
+      "Test Crash",
+      "This will crash the app to test the Error Boundary. Are you sure?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Crash",
+          style: "destructive",
+          onPress: () => setShouldCrash(true),
+        },
+      ],
+    );
+  };
+
+  // Error thrown during render → caught by ErrorBoundary
+  if (shouldCrash) {
+    throw new Error("Sentry Test Crash - JS Error");
+  }
+
   return (
     <Container style={styles.container} removeBottomInset={true}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -80,6 +111,34 @@ const Settings = () => {
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>Test</Text>
             <Text style={styles.profileEmail}>test@gmail.com</Text>
+          </View>
+        </View>
+
+        {/* Environment Info */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Environment</Text>
+          <View style={styles.envCard}>
+            <View style={styles.envRow}>
+              <Text style={styles.envLabel}>Build Profile</Text>
+              <View
+                style={[
+                  styles.envBadge,
+                  { backgroundColor: ENV_BADGE_COLORS[APP_ENV] ?? "#8e8e93" },
+                ]}
+              >
+                <Text style={styles.envBadgeText}>{APP_ENV.toUpperCase()}</Text>
+              </View>
+            </View>
+            <View style={styles.envRow}>
+              <Text style={styles.envLabel}>App Version</Text>
+              <Text style={styles.envValue}>{APP_VERSION}</Text>
+            </View>
+            <View style={styles.envRow}>
+              <Text style={styles.envLabel}>App Name</Text>
+              <Text style={styles.envValue}>
+                {Constants.expoConfig?.name ?? "—"}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -128,6 +187,14 @@ const Settings = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuItem}>
             <Text style={styles.menuItemText}>Support</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.menuItem, styles.debugItem]}
+            onPress={handleTestCrash}
+          >
+            <Text style={[styles.menuItemText, styles.debugText]}>
+              Test Sentry Crash
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -232,6 +299,45 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 16,
     color: Theme.COLORS.TEXT,
+  },
+  envCard: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 16,
+    padding: 16,
+    gap: 14,
+  },
+  envRow: {
+    flexDirection: "row" as const,
+    justifyContent: "space-between" as const,
+    alignItems: "center" as const,
+  },
+  envLabel: {
+    fontSize: 14,
+    color: "#8e8e93",
+  },
+  envValue: {
+    fontSize: 14,
+    fontWeight: "600" as const,
+    color: Theme.COLORS.TEXT,
+  },
+  envBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  envBadgeText: {
+    fontSize: 12,
+    fontWeight: "700" as const,
+    color: "#fff",
+    letterSpacing: 0.8,
+  },
+  debugItem: {
+    borderBottomWidth: 0,
+    marginTop: 10,
+  },
+  debugText: {
+    color: "#FF3B30",
+    fontWeight: "600",
   },
 });
 
