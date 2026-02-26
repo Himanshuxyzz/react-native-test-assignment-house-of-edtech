@@ -69,7 +69,11 @@ const Home = () => {
   };
 
   return (
-    <Container edgeToEdge={true} style={styles.container}>
+    <Container
+      edgeToEdge={true}
+      removeBottomInset={true}
+      style={styles.container}
+    >
       <View style={styles.webViewContainer}>
         {isLoading && (
           <View style={StyleSheet.absoluteFill}>
@@ -127,6 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.COLORS.BACKGROUND,
     borderTopWidth: 1,
     borderTopColor: Theme.COLORS.SKELETON,
+    marginBottom: 12,
   },
   notificationButton: {
     flex: 1,
