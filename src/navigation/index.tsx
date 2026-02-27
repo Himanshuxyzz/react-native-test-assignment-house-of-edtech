@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+} from "@react-navigation/native";
 import { Home, VideoPlayer, Settings } from "@/screens";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import linking from "./linking";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  addNotificationResponseListener,
+  getLastNotificationResponse,
+} from "@/utils/notifications";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -46,8 +53,39 @@ const MainTab = () => {
 };
 
 const RootNavigation = () => {
+  const navigationRef = useRef<NavigationContainerRef<RootParamList>>(null);
+  const isReadyRef = useRef(false);
+
+  useEffect(() => {
+    // Handle notification taps while app is running (foreground/background)
+    const subscription = addNotificationResponseListener((lessonId) => {
+      if (isReadyRef.current && navigationRef.current) {
+        navigationRef.current.navigate("VideoPlayer", { videoId: lessonId });
+      }
+    });
+
+    return () => {
+      subscription.remove();
+      isReadyRef.current = false;
+    };
+  }, []);
+
+  const handleNavigationReady = async () => {
+    isReadyRef.current = true;
+
+    // Cold start: check if the app was opened by tapping a notification
+    const lessonId = await getLastNotificationResponse();
+    if (lessonId && navigationRef.current) {
+      navigationRef.current.navigate("VideoPlayer", { videoId: lessonId });
+    }
+  };
+
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer
+      ref={navigationRef}
+      linking={linking}
+      onReady={handleNavigationReady}
+    >
       <Stack.Navigator
         screenOptions={{
           contentStyle: {

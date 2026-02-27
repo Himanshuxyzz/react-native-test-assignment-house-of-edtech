@@ -12,25 +12,12 @@ import {
   sendWelcomeNotification,
   sendReminderNotification,
   sendLessonUpdateNotification,
-  addNotificationResponseListener,
 } from "@/utils/notifications";
 
 const Home = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootParamList>>();
   const [isLoading, setIsLoading] = useState(true);
   const hasNotifiedRef = useRef(false);
-
-  // Set up notification tap listener
-  useEffect(() => {
-    const subscription = addNotificationResponseListener((lessonId) => {
-      // Navigate to VideoPlayer when notification is tapped
-      navigation.navigate("VideoPlayer", { videoId: lessonId });
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [navigation]);
 
   // Handle messages from webview
   const handleMessage = (event: WebViewMessageEvent) => {

@@ -45,7 +45,7 @@ export const scheduleNotification = async (
   title: string,
   body: string,
   delaySeconds: number = 3,
-  data?: Record<string, unknown>
+  data?: Record<string, unknown>,
 ): Promise<string | undefined> => {
   // Check permission status
   const { status } = await Notifications.getPermissionsAsync();
@@ -69,7 +69,7 @@ export const scheduleNotification = async (
             text: "Enable in Settings",
             onPress: () => Linking.openSettings(),
           },
-        ]
+        ],
       );
       return undefined;
     }
@@ -144,7 +144,7 @@ export const sendLessonUpdateNotification = async (): Promise<void> => {
  * Returns a subscription that should be removed on cleanup
  */
 export const addNotificationResponseListener = (
-  callback: (lessonId: string) => void
+  callback: (lessonId: string) => void,
 ): Notifications.EventSubscription => {
   return Notifications.addNotificationResponseReceivedListener((response) => {
     const data = response.notification.request.content.data;
@@ -152,4 +152,19 @@ export const addNotificationResponseListener = (
       callback(data.lessonId as string);
     }
   });
+};
+
+/**
+ * Get the notification response that launched the app (cold start).
+ * Returns the lessonId if the app was opened by tapping a lesson notification.
+ */
+export const getLastNotificationResponse = async (): Promise<string | null> => {
+  const response = await Notifications.getLastNotificationResponseAsync();
+  if (response) {
+    const data = response.notification.request.content.data;
+    if (data?.type === "openVideo" && data?.lessonId) {
+      return data.lessonId as string;
+    }
+  }
+  return null;
 };
