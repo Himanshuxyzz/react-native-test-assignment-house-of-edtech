@@ -66,9 +66,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: "./assets/favicon.png",
   },
 
+  updates: {
+    url: "https://u.expo.dev/ce0230ac-ba84-4f5a-89ca-4a3e3e303b03",
+  },
+
+  runtimeVersion: {
+    policy: "appVersion",
+  },
+
   // expose APP_ENV to runtime via expo-constants
   extra: {
     APP_ENV,
+    eas: {
+      projectId: "ce0230ac-ba84-4f5a-89ca-4a3e3e303b03",
+    },
   },
 
   plugins: [

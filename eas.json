@@ -17,6 +17,9 @@
     "preview_local": {
       "distribution": "internal",
       "environment": "preview",
+      "env": {
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+      },
       "android": {
         "gradleCommand": ":app:assembleRelease"
       },
